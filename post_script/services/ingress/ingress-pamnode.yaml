@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-kubernetes-ingress
+  namespace: sapidblue
+  annotations:
+    kubernetes.io/ingress.class: nginx
+spec:
+  rules:
+  - host: "kqa-paypr-pam.lottoweaver.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: pam-front
+            port:
+              number: 80
+  - host: "kqa-paypr-ram.lottoweaver.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: ram-front
+            port:
+              number: 80
+  - host: "kqa-paypr-comm.lottoweaver.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: comm-front
+            port:
+              number: 80

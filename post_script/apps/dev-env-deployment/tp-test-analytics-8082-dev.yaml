@@ -1,0 +1,40 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: tp-test-analytics-8082
+   namespace: dev
+ spec:
+   selector:
+    matchLabels:
+      app: tp-test-analytics-8082
+   replicas: 1
+   template:
+     metadata:
+       labels:
+         app: tp-test-analytics-8082
+     spec:
+       containers:
+       - name: tp-test-analytics-8082
+         image: 910393620193.dkr.ecr.us-east-1.amazonaws.com/tt-tp/ecr-repo-test-analytics-service-8082-eks-dev-qa-stage:dev
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 8082
+           protocol: TCP
+         livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8082
+            initialDelaySeconds: 21600
+         resources:
+           requests:
+             cpu: "2000m"
+             memory: 3800Mi
+           limits:
+             cpu: "2000m"
+             memory: 4000Mi
+         lifecycle:
+           preStop:
+             exec:
+               command: ["/bin/bash","-c","/bin/sleep 120; kill -QUIT 1"]
+       terminationGracePeriodSeconds: 120

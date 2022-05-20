@@ -1,0 +1,23 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: pam-front
+   namespace: sapidblue
+ spec:
+   selector:
+    matchLabels:
+      app: pam-front
+   replicas: 1
+   template:
+     metadata:
+       labels:
+         app: pam-front
+     spec:
+       containers:
+       - name: pam-front
+         image: 604795023295.dkr.ecr.ap-southeast-1.amazonaws.com/skillrock/sapidblue/frontend/pam:sapidblue-qa
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 80
+           protocol: TCP

@@ -1,0 +1,78 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: payper-qa-ingress
+  namespace: sapidblue
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: paypr-qa
+spec:
+  tls:
+  - hosts:
+    - kqa-paypr-pam.lottoweaver.com
+    - kqa-paypr-ram.lottoweaver.com
+    - kqa-paypr-comm.lottoweaver.com
+    - kqa-paypr-pam-backend.lottoweaver.com
+    secretName: paypr-qa-tls
+  rules:
+  - host: "kqa-paypr-pam.lottoweaver.com"
+    http:
+      paths:
+      - path: "/"
+        pathType: Prefix
+        backend:
+          service:
+            name: pam-front
+            port:
+              number: 80
+      - path: "/api/PAM"
+        pathType: Prefix
+        backend:
+          service:
+            name: pam-node
+            port:
+              number: 3000
+      - path: "/api/RAM"
+        pathType: Prefix
+        backend:
+          service:
+            name: ram-node
+            port:
+              number: 3000
+      - path: "/api/COMM"
+        pathType: Prefix
+        backend:
+          service:
+            name: comm-node
+            port:
+              number: 3000
+  - host: "kqa-paypr-ram.lottoweaver.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: ram-front
+            port:
+              number: 80
+  - host: "kqa-paypr-comm.lottoweaver.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: comm-front
+            port:
+              number: 80
+  - host: "kqa-paypr-pam-backend.lottoweaver.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: pam-8080
+            port:
+              number: 8080

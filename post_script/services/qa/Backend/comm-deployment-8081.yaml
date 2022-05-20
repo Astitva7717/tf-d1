@@ -1,0 +1,23 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: comm-8081
+   namespace: sapidblue
+ spec:
+   selector:
+    matchLabels:
+      app: comm-8081
+   replicas: 1
+   template:
+     metadata:
+       labels:
+         app: comm-8081
+     spec:
+       containers:
+       - name: comm-8081
+         image: 604795023295.dkr.ecr.ap-southeast-1.amazonaws.com/skillrock/sapidblue/java/comm:sapidblue-qa
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 8081
+           protocol: TCP

@@ -1,0 +1,23 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: bonus-front
+   namespace: sapidblue
+ spec:
+   selector:
+    matchLabels:
+      app: bonus-front
+   replicas: 1
+   template:
+     metadata:
+       labels:
+         app: bonus-front
+     spec:
+       containers:
+       - name: bonus-front
+         image: 604795023295.dkr.ecr.ap-southeast-1.amazonaws.com/skillrock/sapidblue/frontend/bonus:sapidblue-qa
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 80
+           protocol: TCP

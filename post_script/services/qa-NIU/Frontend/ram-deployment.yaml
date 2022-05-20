@@ -1,0 +1,23 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: ram-front
+   namespace: sapidblue
+ spec:
+   selector:
+    matchLabels:
+      app: ram-front
+   replicas: 1
+   template:
+     metadata:
+       labels:
+         app: ram-front
+     spec:
+       containers:
+       - name: ram-front
+         image: 604795023295.dkr.ecr.ap-southeast-1.amazonaws.com/skillrock/sapidblue/frontend/ram:sapidblue-qa
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 80
+           protocol: TCP

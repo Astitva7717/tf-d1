@@ -1,0 +1,23 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: ram-8080
+   namespace: sapidblue
+ spec:
+   selector:
+    matchLabels:
+      app: ram-8080
+   replicas: 1
+   template:
+     metadata:
+       labels:
+         app: ram-8080
+     spec:
+       containers:
+       - name: ram-8080
+         image: 604795023295.dkr.ecr.ap-southeast-1.amazonaws.com/skillrock/sapidblue/ram:sapidblue-qa
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 8080
+           protocol: TCP

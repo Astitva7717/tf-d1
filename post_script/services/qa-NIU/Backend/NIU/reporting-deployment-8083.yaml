@@ -1,0 +1,30 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: reporting-8083
+   namespace: sapidblue
+ spec:
+   selector:
+    matchLabels:
+      app: reporting-8083
+   replicas: 1
+   template:
+     metadata:
+       labels:
+         app: reporting-8083
+     spec:
+       containers:
+       - name: reporting-8083
+         image: 604795023295.dkr.ecr.ap-southeast-1.amazonaws.com/skillrock/sapidblue/java/reporting:sapidblue-qa
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 8083
+           protocol: TCP
+         resources:
+           requests:
+             cpu: "1000m"
+             memory: 1000Mi
+           limits:
+             cpu: "2000m"
+             memory: 2000Mi

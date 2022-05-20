@@ -1,0 +1,30 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: cashier-8085
+   namespace: sapidblue
+ spec:
+   selector:
+    matchLabels:
+      app: cashier-8085
+   replicas: 1
+   template:
+     metadata:
+       labels:
+         app: cashier-8085
+     spec:
+       containers:
+       - name: cashier-8085
+         image: 604795023295.dkr.ecr.ap-southeast-1.amazonaws.com/skillrock/sapidblue/java/cashier:sapidblue-qa
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 8085
+           protocol: TCP
+         resources:
+           requests:
+             cpu: "1000m"
+             memory: 1000Mi
+           limits:
+             cpu: "2000m"
+             memory: 2000Mi

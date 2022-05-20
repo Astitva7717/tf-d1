@@ -1,0 +1,23 @@
+---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   name: rg-front
+   namespace: sapidblue
+ spec:
+   selector:
+    matchLabels:
+      app: rg-front
+   replicas: 1
+   template:
+     metadata:
+       labels:
+         app: rg-front
+     spec:
+       containers:
+       - name: rg-front
+         image: 604795023295.dkr.ecr.ap-southeast-1.amazonaws.com/skillrock/sapidblue/frontend/rg:sapidblue-qa
+         imagePullPolicy: Always
+         ports:
+         - containerPort: 80
+           protocol: TCP

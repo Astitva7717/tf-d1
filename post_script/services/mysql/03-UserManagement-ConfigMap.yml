@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: usermanagement-dbcreation-script
+  namespace: sapidblue-mysql
+data: 
+  mysql_usermgmt.sql: |-
+    DROP DATABASE IF EXISTS skillrock;
+    CREATE DATABASE skillrock; 
