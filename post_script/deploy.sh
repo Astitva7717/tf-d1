@@ -1,6 +1,6 @@
 #!/bin/sh
 export KUBE_CONFIG_PATH=$HOME/.kube/config
-cd $HOME/aakash-terraform
+cd $HOME/skillrock-terraform-EKS
 terraform init
 # terraform plan -var-file="dev.tfvars" -exclude=module.albc
 terraform apply -var-file="dev.tfvars" -exclude=module.albc

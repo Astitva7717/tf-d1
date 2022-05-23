@@ -33,7 +33,7 @@ echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 
 export KUBE_CONFIG_PATH=$HOME/.kube/config
 
-aws eks --region us-east-1 update-kubeconfig --name ugro-ks-cluster-prod
+aws eks --region us-southeast-1 update-kubeconfig --name skillrock-ks-cluster-all
 
 ########Install only perticular module############
 
