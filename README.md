@@ -1,10 +1,19 @@
-# Terraform template for AWS EKS with Fargate profile
 
-This terraform will be used to setup the AWS infrastructure
-for a dockerized application running on EKS with a Fargate profile.
+## Prerequisite:-
+1. Ubuntu machine
+2. IAM Access key and Secret with EKS, VPN, IAM full access
 
-## Prerequisites
-This requires `aws-iam-authenticator`
+## Steps:- 
+1. Run build-tools.sh file in pre_script folder eg. sh build-tools.sh (this will install every tool required to deploy infra and application)
+2. Run AWS configure command to add access key, secret and region
+3. Add values in prod.tfvars/qa.tfvars or dev.tfvars
+4. Go to tf_state_save folder
+5. Give bucket name where the terraform state will be saved
+6. run terrafom init and apply in the same folder with value file eg. terraform apply -var-file="prod.tfvars"
+7. Open main.tf file in root folder and give the same name given in values file in line no 3, 8, 9
+8. run terraform init , terraform plan and terraform apply with value file eg. terraform apply -var-file="prod.tfvars"
+
+
 
 ## System setup Install build tools 
 1. sudo sh pre_script/buildtools.sh

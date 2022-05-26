@@ -18,6 +18,11 @@ variable "vpc_id" {
   description = "The VPC the cluser should be created in"
 }
 
+variable "fargate_namespace" {
+  description = "List of private subnet IDs"
+}
+
+
 variable "private_subnets" {
   description = "List of private subnet IDs"
 }

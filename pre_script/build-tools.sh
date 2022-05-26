@@ -32,9 +32,6 @@ mkdir -p $HOME/bin && cp ./aws-iam-authenticator $HOME/bin/aws-iam-authenticator
 echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
 
 export KUBE_CONFIG_PATH=$HOME/.kube/config
-
-aws eks --region us-southeast-1 update-kubeconfig --name skillrock-ks-cluster-all
-
 ########Install only perticular module############
 
 

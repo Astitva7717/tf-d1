@@ -33,7 +33,7 @@ resource "aws_eks_fargate_profile" "main" {
   subnet_ids             = var.private_subnets.*.id
 
   selector {
-    namespace = "default"
+    namespace = var.fargate_namespace
   }
   
   timeouts {
@@ -42,21 +42,6 @@ resource "aws_eks_fargate_profile" "main" {
   }
 }
 
-resource "aws_eks_fargate_profile" "sapidblue" {
-  cluster_name           = aws_eks_cluster.main.name
-  fargate_profile_name   = "fp-sapidblue"
-  pod_execution_role_arn = aws_iam_role.fargate_pod_execution_role.arn
-  subnet_ids             = var.private_subnets.*.id
-
-  selector {
-    namespace = "sapidblue"
-  }
-
-  timeouts {
-    create = "30m"
-    delete = "60m"
-  }
-}
 
 output "pod_execution_role" {
   description = "fargate_pod_execution_role for cloudwatch logging "
