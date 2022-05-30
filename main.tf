@@ -1,20 +1,3 @@
-terraform {
-  required_version = "~>1.0.1"
-  backend "s3" {
-   bucket         = "mohit-ks-cluster-state"
-   key            = "state/terraform.tfstate"
-   region         = "ap-southeast-1"
-   encrypt        = true
-   kms_key_id     = "alias/mohit-ks-cluster-key"
-   dynamodb_table = "mohit-ks-cluster-state"
- }
-}
-
-provider "aws" {
-  version = ">= 3.50"
-  region  = var.region
-}
-
 module "vpc" {
   source             = "./vpc"
   name               = var.name

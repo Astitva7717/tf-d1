@@ -28,7 +28,7 @@ POLICY
 
 resource "aws_eks_fargate_profile" "main" {
   cluster_name           = aws_eks_cluster.main.name
-  fargate_profile_name   = "fp-default"
+  fargate_profile_name   = "fp-qa"
   pod_execution_role_arn = aws_iam_role.fargate_pod_execution_role.arn
   subnet_ids             = var.private_subnets.*.id
 
@@ -70,7 +70,7 @@ data "aws_iam_policy_document" "aws_fargate_logging_policy" {
 }
 
 resource "aws_iam_policy" "aws_fargate_logging_policy" {
-  name   = "aws_fargate_logging_policy"
+  name   = "${var.name}-ks-cluster-aws_fargate_logging_policy-${var.environment}"
   path   = "/"
   policy = data.aws_iam_policy_document.aws_fargate_logging_policy.json
 }

@@ -124,16 +124,16 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public.id
 }
 
-resource "aws_db_subnet_group" "main" {
-  name        = "${var.name}-subnet-group-eks-${var.environment}"
-  description = "Aakash Test-Player RDS subnet group"
-  subnet_ids  = ["${element(aws_subnet.public.*.id,0)}", "${element(aws_subnet.public.*.id,1)}", "${element(aws_subnet.public.*.id,2)}"]
-}
+# resource "aws_db_subnet_group" "main" {
+#   name        = "${var.name}-subnet-group-eks-${var.environment}"
+#   description = "Sapidblue RDS subnet group"
+#   subnet_ids  = ["${element(aws_subnet.public.*.id,0)}", "${element(aws_subnet.public.*.id,1)}", "${element(aws_subnet.public.*.id,2)}"]
+# }
 
-resource "aws_elasticache_subnet_group" "main" {
-  name        = "${var.name}-cache-subnet-group-eks-${var.environment}"
-  subnet_ids  = ["${element(aws_subnet.public.*.id,0)}", "${element(aws_subnet.public.*.id,1)}", "${element(aws_subnet.public.*.id,2)}"]
-}
+# resource "aws_elasticache_subnet_group" "main" {
+#   name        = "${var.name}-cache-subnet-group-eks-${var.environment}"
+#   subnet_ids  = ["${element(aws_subnet.public.*.id,0)}", "${element(aws_subnet.public.*.id,1)}", "${element(aws_subnet.public.*.id,2)}"]
+# }
 
 /*resource "aws_flow_log" "main" {
   iam_role_arn    = aws_iam_role.vpc-flow-logs-role.arn
@@ -213,6 +213,6 @@ output "private_subnets" {
 #  value = aws_db_subnet_group.main.id
 #}
 
-output "cache_subnet_group" {
-  value = aws_elasticache_subnet_group.main.id
-}
+# output "cache_subnet_group" {
+#   value = aws_elasticache_subnet_group.main.id
+# }
