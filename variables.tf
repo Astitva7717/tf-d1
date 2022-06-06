@@ -26,6 +26,14 @@ variable "public_subnets" {
   description = "a list of CIDRs for public subnets in your VPC, must be set if the cidr variable is defined, needs to have as many elements as there are availability zones"
 }
 
+variable "jenkins_instance_class" {
+  description = "a list of CIDRs for public subnets in your VPC, must be set if the cidr variable is defined, needs to have as many elements as there are availability zones"
+}
+
+variable "jenkins_pam_file" {
+  description = "a list of CIDRs for public subnets in your VPC, must be set if the cidr variable is defined, needs to have as many elements as there are availability zones"
+}
+
 # variable "input_vpc_id" {
 #   description = "Input VPC ID"
 # }

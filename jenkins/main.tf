@@ -1,16 +1,17 @@
 data "aws_ami" "ubuntu" {
   most_recent = true
+  owners      = ["099720109477"] # Canonical
+  
   filter {
-    name   = "${var.name}-${var.environment}-jenkins"
+    name   = "name"
     values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
   }
+  
   filter {
     name   = "virtualization-type"
     values = ["hvm"]
   }
-  owners = ["099720109477"] # Canonical
 }
-
 resource "aws_security_group" "jenkins-sg" {
   name              = "${var.name}-${var.environment}-jenkins-sg"
   description       = "${var.name}-${var.environment}-jenkins-security group"
@@ -43,7 +44,7 @@ resource "aws_security_group" "jenkins-sg" {
 resource "aws_instance" "jenkins" {
   ami                           = data.aws_ami.ubuntu.id
   instance_type                 = var.instance_class
-  subnet_id                     = var.private_subnet.id
+  subnet_id                     = var.private_subnets[0].id
   key_name                      = var.pemkey
   vpc_security_group_ids        = [aws_security_group.jenkins-sg.id]
   user_data = <<EOF
@@ -65,7 +66,6 @@ chmod 700 get_helm.sh
 EOF
   root_block_device {
     delete_on_termination = true
-    iops = 150
     volume_size = 50
     volume_type = "gp2"
   }

@@ -1,5 +1,5 @@
 variable "name" {
-  description = "Bucket Name, e.g. \"demo\""
+  description = "the name of your stack, e.g. \"demo\""
 }
 
 variable "environment" {

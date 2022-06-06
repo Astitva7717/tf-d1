@@ -37,3 +37,6 @@ rds_name     = "sapidblue-rds-proxy-eks"
 rds_username = "sapidblue"
 rds_userpassword = "sapidblue"
 rds_instance_class = "db.t3.medium"
+
+jenkins_instance_class = "t3a.large"
+jenkins_pam_file = "jenkins"
