@@ -1,8 +1,8 @@
 #data "aws_region" "current" {}
 
 resource "aws_security_group" "rds_sg" {
-  name        = "lcms-tp-rds-cluster-sg-eks-${var.environment}"
-  description = "lcms-tp-rds-cluster-sg-eks-${var.environment}"
+  name        = "sapidblue-rds-cluster-sg-eks-${var.environment}"
+  description = "sapidblue-rds-cluster-sg-eks-${var.environment}"
   vpc_id      = var.vpc_id
     
     ingress {
@@ -16,27 +16,27 @@ resource "aws_security_group" "rds_sg" {
   }
 
   tags = {
-    Product = "lcms-tp"
+    Product = "sapidblue"
     Environment = var.environment
   }
 }
 
 resource "aws_db_subnet_group" "main" {
-  name        = "lcms-tp-rds-cluster-sbntg-eks-${var.environment}"
-  description = "lcms-tp-rds-cluster-sbntg-eks-${var.environment}"
+  name        = "sapidblue-rds-cluster-sbntg-eks-${var.environment}"
+  description = "sapidblue-rds-cluster-sbntg-eks-${var.environment}"
   subnet_ids  = var.private_subnets.*.id      # change subnet to DB only 
 
   tags = {
-    Product = "lcms-tp"
+    Product = "sapidblue"
     Environment = var.environment
   }
 
 }
 
 resource "aws_rds_cluster_parameter_group" "default" {
-  name        = "lcms-tp-rds-cluster-pg-eks-${var.environment}"
+  name        = "sapidblue-rds-cluster-pg-eks-${var.environment}"
   family      = "aurora-mysql5.7"
-  description = "lcms-tp-rds-cluster-pg-eks-${var.environment}"
+  description = "sapidblue-rds-cluster-pg-eks-${var.environment}"
   parameter {
     name  = "server_audit_events"
     value = "CONNECT,QUERY,QUERY_DCL,QUERY_DDL,QUERY_DML,TABLE"
@@ -50,14 +50,14 @@ resource "aws_rds_cluster_parameter_group" "default" {
     value = "1"
   }
 tags = {
-    Product = "lcms-tp"
+    Product = "sapidblue"
     Environment = var.environment
   }
 
 }
 
 resource "aws_db_parameter_group" "default" {
-  name   = "lcms-tp-rds-pg-eks-${var.environment}"
+  name   = "sapidblue-rds-pg-eks-${var.environment}"
   family = "aurora-mysql5.7"
   description = "lcms-tp-rds-pg-eks-${var.environment}"
 
@@ -69,7 +69,7 @@ resource "aws_db_parameter_group" "default" {
 
 resource "aws_rds_cluster_instance" "cluster_instances" {
   count                       = 2
-  identifier                  = "lcms-tp-rds-eks-${var.environment}-${count.index}"
+  identifier                  = "sapidblue-rds-eks-${var.environment}-${count.index}"
   cluster_identifier          = aws_rds_cluster.aakash_rds.id
   instance_class              = var.instance_class
   engine                      = "aurora-mysql"
@@ -79,13 +79,13 @@ resource "aws_rds_cluster_instance" "cluster_instances" {
   db_parameter_group_name     = aws_db_parameter_group.default.name
 
   tags = {
-    Product = "lcms-tp"
+    Product = "sapidblue"
     Environment = var.environment
   }
 }
 
 resource "aws_rds_cluster" "aakash_rds" {
-  cluster_identifier                  = "lcms-tp-rds-cluster-eks-${var.environment}"
+  cluster_identifier                  = "sapidblue-rds-cluster-eks-${var.environment}"
   engine                              = "aurora-mysql"
   engine_version                      = "5.7.mysql_aurora.2.07.2"
   database_name                       = "lcms"
@@ -94,11 +94,11 @@ resource "aws_rds_cluster" "aakash_rds" {
   storage_encrypted                   = true
   apply_immediately                   = true
   skip_final_snapshot                 = false
-  final_snapshot_identifier           = "lcms-tp-rds-cluster-eks-${var.environment}"
-  snapshot_identifier                 = "lcms-tp-rds-cluster-eks-${var.environment}"
+  final_snapshot_identifier           = "sapidblue-rds-cluster-eks-${var.environment}"
+  snapshot_identifier                 = "sapidblue-rds-cluster-eks-${var.environment}"
   deletion_protection                 = true
   backup_retention_period             = 7
-  vpc_security_group_ids              = [aws_security_group.rds_sg.id,var.colo_security_group,var.lcms-sg-id,var.tp-sg-id]
+  vpc_security_group_ids              = [aws_security_group.rds_sg.id,var.lcms-sg-id,var.tp-sg-id]
   db_subnet_group_name                = aws_db_subnet_group.main.id
   db_cluster_parameter_group_name     = aws_rds_cluster_parameter_group.default.name
   enabled_cloudwatch_logs_exports     = ["audit", "error", "general", "slowquery"]

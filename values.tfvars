@@ -29,3 +29,11 @@ kubeconfig_path     = "~/.kube"
 ## A comma-separated list of availability zones, defaults to all AZ of the region, if set to something other than the defaults, both private_subnets and public_subnets have to be defined as well"
 ## Kubernetes version
 k8s_version = "1.21"
+
+# Variables for RDS
+######################################
+## Name of rds instance, e.g. demo
+rds_name     = "sapidblue-rds-proxy-eks"
+rds_username = "sapidblue"
+rds_userpassword = "sapidblue"
+rds_instance_class = "db.t3.medium"

@@ -6,10 +6,6 @@ variable "secret_name" {
   description = "Project-prefix, e.g. \"demo\""
 }
 
-variable "secret_arn" {
-  description = "Secrect ARN"
-}
-
 variable "rds_proxy_name" {
   description = "the name of RDS Proxy Name, e.g. \"demo\""
 }
@@ -38,9 +34,6 @@ variable "public_subnets" {
   description = "List of private subnet IDs"
 }
 
-variable "colo_security_group" {
-  description = "colo security group id"
-}
 
 # variable "db_subnet_group_id" {
 #  description = "Subnet Group ID"
@@ -80,8 +73,4 @@ variable "iam_role_permissions_boundary" {
 
 variable "lcms-sg-id" {
   description = "LCMS security group id"
-}
-
-variable "tp-sg-id" {
-  description = "TP security group id"
 }
