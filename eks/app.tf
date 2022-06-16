@@ -24,6 +24,10 @@ resource "aws_iam_role" "fargate_pod_execution_role" {
   ]
 }
 POLICY
+lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [tags]
+  }
 }
 
 resource "aws_eks_fargate_profile" "main" {
@@ -39,6 +43,10 @@ resource "aws_eks_fargate_profile" "main" {
   timeouts {
     create = "30m"
     delete = "60m"
+  }
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [tags]
   }
 }
 

@@ -12,6 +12,53 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 }
+resource "aws_iam_role" "ecr_role" {
+  name = "${var.name}-${var.environment}-jenkins-role"
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": "ec2.amazonaws.com"
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+
+EOF
+
+  tags = {
+      Project = "${var.name}-${var.environment}"
+  }
+}
+resource "aws_iam_instance_profile" "ec2_ecr_profile" {
+  name = "${var.name}-${var.environment}-jenkins-profile"
+  role = "${aws_iam_role.ecr_role.name}"
+}
+
+resource "aws_iam_role_policy" "test_policy" {
+  name = "${var.name}-${var.environment}-jenkins-policy"
+  role = "${aws_iam_role.ecr_role.id}"
+
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "ecr:*",
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+}
 resource "aws_security_group" "jenkins-sg" {
   name              = "${var.name}-${var.environment}-jenkins-sg"
   description       = "${var.name}-${var.environment}-jenkins-security group"
@@ -45,6 +92,8 @@ resource "aws_instance" "jenkins" {
   ami                           = data.aws_ami.ubuntu.id
   instance_type                 = var.instance_class
   subnet_id                     = var.private_subnets[0].id
+  //subnet_id                     = var.public_subnets[0].id
+  iam_instance_profile          = "${aws_iam_instance_profile.ec2_ecr_profile.name}"
   key_name                      = var.pemkey
   vpc_security_group_ids        = [aws_security_group.jenkins-sg.id]
   user_data = <<EOF
@@ -57,12 +106,15 @@ sudo chmod +x /usr/local/bin/docker-compose
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
 echo "$(<kubectl.sha256) kubectl" | sha256sum --check
-sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl -y
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
 ################ helm ###############
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
 chmod 700 get_helm.sh
 ./get_helm.sh
-
+sudo apt install unzip
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
 EOF
   root_block_device {
     delete_on_termination = true
@@ -71,6 +123,10 @@ EOF
   }
   tags = {
     Project = "${var.name}-${var.environment}"
+  }
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [ami, tags]
   }
   depends_on = [ aws_security_group.jenkins-sg ]
 }

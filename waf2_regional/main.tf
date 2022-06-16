@@ -905,6 +905,10 @@ resource "aws_wafv2_web_acl" "main" {
     Product     = "sapidblue-waf-regional-eks"
     Environment = var.environment
   }
+  lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [tags]
+  }
 
   dynamic "visibility_config" {
     for_each = length(var.visibility_config) == 0 ? [] : [var.visibility_config]

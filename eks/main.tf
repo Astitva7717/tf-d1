@@ -85,6 +85,11 @@ resource "aws_iam_role" "eks_cluster_role" {
   ]
 }
 POLICY
+lifecycle {
+    create_before_destroy = true
+    ignore_changes        = [tags]
+  }
+
 }
 
 resource "aws_iam_role_policy_attachment" "AmazonEKSClusterPolicy" {
@@ -188,9 +193,10 @@ resource "aws_iam_role_policy_attachment" "AmazonEC2ContainerRegistryReadOnly" {
 
 resource "aws_eks_node_group" "main" {
   cluster_name    = aws_eks_cluster.main.name
-  node_group_name = "kube-system"
+  node_group_name = "kubesystem"
   node_role_arn   = aws_iam_role.eks_node_group_role.arn
   subnet_ids      = var.private_subnets.*.id
+  capacity_type   = "SPOT"
 
   scaling_config {
     desired_size = 2
@@ -207,6 +213,10 @@ resource "aws_eks_node_group" "main" {
     Product     = var.name
     Environment = var.environment
   }
+  # lifecycle {
+  #   create_before_destroy = true
+  #   ignore_changes        = [tags,labels]
+  # }
 
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.

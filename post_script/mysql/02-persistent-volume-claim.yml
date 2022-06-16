@@ -2,11 +2,11 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: sapidblue-mysql-data
-  namespace: sapidblue-mysql
+  namespace: qa-mysql
 spec:
   storageClassName: ebs-sc
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 50Gi
+      storage: 30Gi

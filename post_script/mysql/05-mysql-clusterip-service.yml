@@ -2,13 +2,14 @@ apiVersion: v1
 kind: Service
 metadata: 
   name: mysql
-  namespace: sapidblue-mysql
+  namespace: qa-mysql
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: mysql
   ports:
   - name: mysql
     protocol: TCP
     port: 3306
+    nodePort: 30036
     targetPort: 3306
