@@ -34,20 +34,20 @@ module "jenkins" {
   vpc_id              = module.vpc.id
   private_subnets     = module.vpc.private_subnets
   //public_subnets     = module.vpc.public_subnets
-  instance_class      = var.jenkins_instance_class
-  pemkey              = var.jenkins_pam_file
+  instance_class      = "t3a.micro"
+  //pemkey              = var.jenkins_pam_file
 }
 
-module "sonar" {
-  source              = "./sonar"
-  name                = var.name
-  environment         = var.environment
-  vpc_id              = module.vpc.id
-  private_subnets     = module.vpc.private_subnets
-  //public_subnets     = module.vpc.public_subnets
-  instance_class      = var.sonar_instance_class
-  pemkey              = var.sonar_pam_file
-}
+# module "sonar" {
+#   source              = "./sonar"
+#   name                = var.name
+#   environment         = var.environment
+#   vpc_id              = module.vpc.id
+#   private_subnets     = module.vpc.private_subnets
+#   //public_subnets     = module.vpc.public_subnets
+#   instance_class      = var.sonar_instance_class
+#   pemkey              = var.sonar_pam_file
+# }
 # module "api_gateway" {
 #   source              = "./api_gateway"
 #   name                = var.name

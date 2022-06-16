@@ -22,6 +22,6 @@ variable "private_subnets" {
 #   description = "List of public subnet IDs"
 # }
 
-variable "pemkey" {
-  description = "Pam file name for jenkins ec2 instance"
-}
+# variable "pemkey" {
+#   description = "Pam file name for jenkins ec2 instance"
+# }
