@@ -1,7 +1,7 @@
 #!/bin/sh
 terraform init
 terraform apply -var-file="prod.tfvars"
-aws eks --region us-southeast-1 update-kubeconfig --name skillrock-ks-cluster-all
+aws eks --region ap-south-1 update-kubeconfig --name sapidblue-ks-cluster-dev
 echo "***************Creating namespaces******************"
 kubectl create -f ./post_script/namespaces
 echo "***************Creating Test Taking LCMS - Node Service, Deployment and PDB***************"

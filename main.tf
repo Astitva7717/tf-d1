@@ -27,16 +27,16 @@ module "eks" {
 #   environment         = var.environment
 # }
 
-module "jenkins" {
-  source              = "./jenkins"
-  name                = var.name
-  environment         = var.environment
-  vpc_id              = module.vpc.id
-  private_subnets     = module.vpc.private_subnets
-  //public_subnets     = module.vpc.public_subnets
-  instance_class      = "t3a.micro"
-  //pemkey              = var.jenkins_pam_file
-}
+# module "jenkins" {
+#   source              = "./jenkins"
+#   name                = var.name
+#   environment         = var.environment
+#   vpc_id              = module.vpc.id
+#   private_subnets     = module.vpc.private_subnets
+#   //public_subnets     = module.vpc.public_subnets
+#   instance_class      = "t3a.micro"
+#   //pemkey              = var.jenkins_pam_file
+# }
 
 # module "sonar" {
 #   source              = "./sonar"
@@ -57,11 +57,11 @@ module "jenkins" {
 #   #zone_id             = var.hosted_zone_id
 # }
 
-module "security_group" {
-  source             = "./security_groups"
-  environment        = var.environment
-  vpc_id             = module.vpc.id
-}
+# module "security_group" {
+#   source             = "./security_groups"
+#   environment        = var.environment
+#   vpc_id             = module.vpc.id
+# }
 
 # module "rds" {
 #   source                = "./rds"
