@@ -76,13 +76,13 @@ resource "aws_iam_policy" "s3-eks-policy" {
             "Action": [
                 "s3:ListBucket"
             ],
-            "Resource": "arn:aws:s3:::paypr-manual-content"
+            "Resource": "arn:aws:s3:::paypr-ks-manual-content"
         },
         {
             "Sid": "List",
             "Effect": "Allow",
             "Action": "s3:*",
-            "Resource": "arn:aws:s3:::paypr-manual-content/*"
+            "Resource": "arn:aws:s3:::paypr-ks-manual-content/*"
         }
     ]
 })
