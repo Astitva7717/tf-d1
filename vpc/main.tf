@@ -28,7 +28,6 @@ resource "aws_internet_gateway" "main" {
   }
   lifecycle {
     ignore_changes = [
-      parameters,
       tags
     ]
   }
@@ -47,7 +46,6 @@ resource "aws_nat_gateway" "main" {
   }
   lifecycle {
     ignore_changes = [
-      parameters,
       tags
     ]
   }
@@ -84,7 +82,6 @@ resource "aws_subnet" "private" {
   }
   lifecycle {
     ignore_changes = [
-      parameters,
       tags
     ]
   }
@@ -106,7 +103,6 @@ resource "aws_subnet" "public" {
   }
   lifecycle {
     ignore_changes = [
-      parameters,
       tags
     ]
   }
@@ -122,7 +118,6 @@ resource "aws_route_table" "public" {
   }
   lifecycle {
     ignore_changes = [
-      parameters,
       tags
     ]
   }
@@ -145,7 +140,6 @@ resource "aws_route_table" "private" {
   }
   lifecycle {
     ignore_changes = [
-      parameters,
       tags
     ]
   }
@@ -156,33 +150,18 @@ resource "aws_route" "private" {
   route_table_id         = element(aws_route_table.private.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = element(aws_nat_gateway.main.*.id, count.index)
-  lifecycle {
-    ignore_changes = [
-      parameters
-    ]
-  }
 }
 
 resource "aws_route_table_association" "private" {
   count          = length(var.private_subnets)
   subnet_id      = element(aws_subnet.private.*.id, count.index)
   route_table_id = element(aws_route_table.private.*.id, count.index)
-  lifecycle {
-    ignore_changes = [
-      parameters
-    ]
-  }
 }
 
 resource "aws_route_table_association" "public" {
   count          = length(var.public_subnets)
   subnet_id      = element(aws_subnet.public.*.id, count.index)
   route_table_id = aws_route_table.public.id
-  lifecycle {
-    ignore_changes = [
-      parameters
-    ]
-  }
 }
 
 # resource "aws_db_subnet_group" "main" {
@@ -256,11 +235,6 @@ resource "aws_iam_role_policy" "vpc-flow-logs-policy" {
   ]
 }
 EOF
-lifecycle {
-    ignore_changes = [
-      parameters
-    ]
-  }
 }
 
 output "id" {
