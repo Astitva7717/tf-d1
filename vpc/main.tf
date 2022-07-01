@@ -11,6 +11,12 @@ resource "aws_vpc" "main" {
     Environment                                            = var.environment
     "kubernetes.io/cluster/${var.name}-ks-cluster-${var.environment}" = "shared"
   }
+  lifecycle {
+    ignore_changes = [
+      parameters,
+      tags
+    ]
+  }
 }
 
 resource "aws_internet_gateway" "main" {
@@ -20,6 +26,12 @@ resource "aws_internet_gateway" "main" {
     Name        = "${var.name}-igw-eks-${var.environment}"
     Product     = var.name
     Environment = var.environment
+  }
+  lifecycle {
+    ignore_changes = [
+      parameters,
+      tags
+    ]
   }
 }
 
@@ -34,6 +46,12 @@ resource "aws_nat_gateway" "main" {
     Product     = var.name
     Environment = var.environment
   }
+  lifecycle {
+    ignore_changes = [
+      parameters,
+      tags
+    ]
+  }
 }
 
 resource "aws_eip" "nat" {
@@ -44,6 +62,12 @@ resource "aws_eip" "nat" {
     Name        = "${var.name}-eip-eks-${var.environment}-${format("%03d", count.index+1)}"
     Product     = var.name
     Environment = var.environment
+  }
+  lifecycle {
+    ignore_changes = [
+      parameters,
+      tags
+    ]
   }
 }
 
@@ -59,6 +83,12 @@ resource "aws_subnet" "private" {
     Environment                                            = var.environment
     "kubernetes.io/cluster/${var.name}-ks-cluster-${var.environment}" = "shared"
     "kubernetes.io/role/internal-elb"                      = "1"
+  }
+  lifecycle {
+    ignore_changes = [
+      parameters,
+      tags
+    ]
   }
 }
 
@@ -76,6 +106,12 @@ resource "aws_subnet" "public" {
     "kubernetes.io/cluster/${var.name}-ks-cluster-${var.environment}" = "shared",
     "kubernetes.io/role/elb"                               = "1"
   }
+  lifecycle {
+    ignore_changes = [
+      parameters,
+      tags
+    ]
+  }
 }
 
 resource "aws_route_table" "public" {
@@ -85,6 +121,12 @@ resource "aws_route_table" "public" {
     Name        = "${var.name}-routing-table-public-eks-${var.environment}"
     Product     = var.name
     Environment = var.environment
+  }
+  lifecycle {
+    ignore_changes = [
+      parameters,
+      tags
+    ]
   }
 }
 
@@ -103,6 +145,12 @@ resource "aws_route_table" "private" {
     Product     = var.name
     Environment = var.environment
   }
+  lifecycle {
+    ignore_changes = [
+      parameters,
+      tags
+    ]
+  }
 }
 
 resource "aws_route" "private" {
@@ -110,18 +158,33 @@ resource "aws_route" "private" {
   route_table_id         = element(aws_route_table.private.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
   nat_gateway_id         = element(aws_nat_gateway.main.*.id, count.index)
+  lifecycle {
+    ignore_changes = [
+      parameters
+    ]
+  }
 }
 
 resource "aws_route_table_association" "private" {
   count          = length(var.private_subnets)
   subnet_id      = element(aws_subnet.private.*.id, count.index)
   route_table_id = element(aws_route_table.private.*.id, count.index)
+  lifecycle {
+    ignore_changes = [
+      parameters
+    ]
+  }
 }
 
 resource "aws_route_table_association" "public" {
   count          = length(var.public_subnets)
   subnet_id      = element(aws_subnet.public.*.id, count.index)
   route_table_id = aws_route_table.public.id
+  lifecycle {
+    ignore_changes = [
+      parameters
+    ]
+  }
 }
 
 # resource "aws_db_subnet_group" "main" {
@@ -171,6 +234,11 @@ resource "aws_iam_role" "vpc-flow-logs-role" {
   ]
 }
 EOF
+lifecycle {
+    ignore_changes = [
+      parameters
+    ]
+  }
 }
 
 resource "aws_iam_role_policy" "vpc-flow-logs-policy" {
@@ -195,6 +263,11 @@ resource "aws_iam_role_policy" "vpc-flow-logs-policy" {
   ]
 }
 EOF
+lifecycle {
+    ignore_changes = [
+      parameters
+    ]
+  }
 }
 
 output "id" {
