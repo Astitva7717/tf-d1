@@ -21,11 +21,12 @@ module "eks" {
   kubeconfig_path = var.kubeconfig_path
 }
 
-# module "s3_cdn" {
-#   source              = "./s3_cdn"
-#   name                = var.name
-#   environment         = var.environment
-# }
+module "s3_cdn" {
+  source              = "./s3_cdn"
+  name                = var.name
+  environment         = var.environment
+  region              = var.region
+}
 
 # module "jenkins" {
 #   source              = "./jenkins"

@@ -9,4 +9,4 @@ kubectl create -f ./post_script/services/ingress-controller
 echo "***************Creating Logging configuration***************"
 kubectl create -f ./post_script/logging
 echo "***************Creating Metric Server***************"
-kubectl create -f $HOME/aakash-terraform/post_script/metric-server
+kubectl create -f $HOME/post_script/metric-server
