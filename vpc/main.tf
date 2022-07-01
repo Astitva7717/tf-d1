@@ -13,7 +13,6 @@ resource "aws_vpc" "main" {
   }
   lifecycle {
     ignore_changes = [
-      parameters,
       tags
     ]
   }
@@ -65,7 +64,6 @@ resource "aws_eip" "nat" {
   }
   lifecycle {
     ignore_changes = [
-      parameters,
       tags
     ]
   }
@@ -234,11 +232,6 @@ resource "aws_iam_role" "vpc-flow-logs-role" {
   ]
 }
 EOF
-lifecycle {
-    ignore_changes = [
-      parameters
-    ]
-  }
 }
 
 resource "aws_iam_role_policy" "vpc-flow-logs-policy" {
