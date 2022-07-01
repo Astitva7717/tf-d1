@@ -64,3 +64,14 @@ resource "aws_cloudfront_distribution" "s3-cdn-eks" {
     Environment = var.environment
   }
 }
+
+resource "aws_iam_role" "eks_s3_access_role" {
+  name               = "${var.name}-ks-document-upload-role-${var.environment}"
+  assume_role_policy = "${file("assumerolepolicy.json")}"
+}
+
+resource "aws_iam_policy" "s3-eks-policy" {
+  name        = "${var.name}-ks-document-upload-policy-${var.environment}"
+  description = "S3 Bucket policy for EKS access"
+  policy      = "${file("policy.json")}"
+}
