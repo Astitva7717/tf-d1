@@ -73,5 +73,22 @@ resource "aws_iam_role" "eks_s3_access_role" {
 resource "aws_iam_policy" "s3-eks-policy" {
   name        = "${var.name}-ks-document-upload-policy-${var.environment}"
   description = "S3 Bucket policy for EKS access"
-  policy      = "${file("policy.json")}"
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Resource": "arn:aws:s3:::mernplus-manual-content"
+        },
+        {
+            "Sid": "List",
+            "Effect": "Allow",
+            "Action": "s3:*",
+            "Resource": "arn:aws:s3:::mernplus-manual-content/*"
+        }
+    ]
+})
 }
