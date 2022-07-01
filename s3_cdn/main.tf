@@ -20,7 +20,7 @@ resource "aws_cloudfront_distribution" "s3-cdn-eks" {
   origin {
     domain_name = lower("${var.name}-manual-content.s3.${var.region}.amazonaws.com")
     #origin_path = "/${var.environment}"
-    origin_id   = lower("${var.name}-manual-content.s3.${var.region}.amazonaws.com")
+    origin_id   = "S3-${aws_s3_bucket.prod_bucket.bucket}"
 
     custom_origin_config {
 			http_port              = 80
