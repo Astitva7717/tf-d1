@@ -17,7 +17,6 @@ module "eks" {
   vpc_id          = module.vpc.id
   private_subnets = module.vpc.private_subnets
   public_subnets  = module.vpc.public_subnets
-  fargate_namespace = var.fargate_profile_namespace
   kubeconfig_path = var.kubeconfig_path
 }
 
