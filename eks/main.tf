@@ -196,7 +196,7 @@ resource "aws_eks_node_group" "main" {
   node_group_name = "kubesystem"
   node_role_arn   = aws_iam_role.eks_node_group_role.arn
   subnet_ids      = var.private_subnets.*.id
-  capacity_type   = "SPOT"
+  capacity_type   = "ON_DEMAND"
 
   scaling_config {
     desired_size = 2
