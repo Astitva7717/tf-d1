@@ -19,7 +19,14 @@ module "eks" {
   public_subnets  = module.vpc.public_subnets
   kubeconfig_path = var.kubeconfig_path
 }
-
+module "cluster_autoscaler" {
+  source                           = "./eks"
+  enabled                          = true
+  cluster_name                     = module.eks.cluster_id
+  cluster_identity_oidc_issuer     = module.eks.cluster_oidc_issuer_url
+  cluster_identity_oidc_issuer_arn = module.eks.oidc_provider_arn
+  aws_region                       = var.region
+}
 module "s3_cdn" {
   source              = "./s3_cdn"
   name                = var.name
