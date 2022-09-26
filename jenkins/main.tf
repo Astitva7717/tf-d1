@@ -13,7 +13,7 @@ data "aws_ami" "ubuntu" {
   }
 }
 resource "aws_iam_role" "ecr_role" {
-  name = "${var.name}-${var.environment}-jenkins-role"
+  name = "${var.name}-jenkins-role"
 
   assume_role_policy = <<EOF
 {
@@ -33,16 +33,16 @@ resource "aws_iam_role" "ecr_role" {
 EOF
 
   tags = {
-      Project = "${var.name}-${var.environment}"
+      Project = "${var.name}"
   }
 }
 resource "aws_iam_instance_profile" "ec2_ecr_profile" {
-  name = "${var.name}-${var.environment}-jenkins-profile"
+  name = "${var.name}-jenkins-profile"
   role = "${aws_iam_role.ecr_role.name}"
 }
 
 resource "aws_iam_role_policy" "test_policy" {
-  name = "${var.name}-${var.environment}-jenkins-policy"
+  name = "${var.name}-jenkins-policy"
   role = "${aws_iam_role.ecr_role.id}"
 
   policy = <<EOF
@@ -60,8 +60,8 @@ resource "aws_iam_role_policy" "test_policy" {
 EOF
 }
 resource "aws_security_group" "jenkins-sg" {
-  name              = "${var.name}-${var.environment}-jenkins-sg"
-  description       = "${var.name}-${var.environment}-jenkins-security group"
+  name              = "${var.name}-jenkins-sg"
+  description       = "${var.name}-jenkins-security group"
   vpc_id = var.vpc_id
   ingress {
     from_port = 22
@@ -122,7 +122,7 @@ EOF
     volume_type = "gp2"
   }
   tags = {
-    Project = "${var.name}-${var.environment}"
+    Project = "${var.name}"
   }
   lifecycle {
     create_before_destroy = true

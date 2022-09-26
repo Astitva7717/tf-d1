@@ -2,10 +2,6 @@ variable "name" {
   description = "Project-prefix, e.g. \"demo\""
 }
 
-variable "environment" {
-  description = "the name of your environment, e.g. \"prod\""
-}
-
 variable "instance_class" {
   description = "Jenkins instance class"
 }
@@ -18,10 +14,3 @@ variable "private_subnets" {
   description = "List of private subnet IDs"
 }
 
-# variable "public_subnets" {
-#   description = "List of public subnet IDs"
-# }
-
-# variable "pemkey" {
-#   description = "Pam file name for jenkins ec2 instance"
-# }
